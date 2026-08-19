@@ -29,18 +29,28 @@ const FILTERS: { key: EstadoFilter; label: string }[] = [
 // Room for the FAB: 84 wide at 24 from the edge, + 12 of breathing space.
 const FAB_LANE = 84 + 24 + 12;
 
-export function BottomBar({
+export function BottomBar<T extends string = EstadoFilter>({
   value,
   onChange,
+  options,
+  noun = ["usuario", "usuarios"],
+  pillId = "movil-filter-pill",
   hidden = false,
   count,
 }: {
-  value: EstadoFilter;
-  onChange: (v: EstadoFilter) => void;
+  value: T;
+  onChange: (v: T) => void;
+  /** Defaults to the usuarios estado filter. */
+  options?: { key: T; label: string }[];
+  /** [singular, plural] for the live count. */
+  noun?: [string, string];
+  /** Own layoutId per screen, so two bars can't fight over one pill. */
+  pillId?: string;
   /** Sheet is open — clear the stage. */
   hidden?: boolean;
   count: number;
 }) {
+  const items = options ?? (FILTERS as unknown as { key: T; label: string }[]);
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[45]">
       <motion.div
@@ -63,12 +73,15 @@ export function BottomBar({
           transition={springs.snappy}
           className="mb-2 block pl-3 text-[12px] font-medium text-gray-400"
         >
-          {count} {count === 1 ? "usuario" : "usuarios"}
+          {count} {count === 1 ? noun[0] : noun[1]}
         </motion.span>
 
         <div className="pointer-events-auto rounded-[24px] bg-charcoal p-1 shadow-big">
-          <div className="relative grid grid-cols-3">
-            {FILTERS.map((f) => {
+          <div
+            className="relative grid"
+            style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}
+          >
+            {items.map((f) => {
               const active = f.key === value;
               return (
                 <button
@@ -85,7 +98,7 @@ export function BottomBar({
                     // filters reads as the pill travelling rather than two
                     // separate fades.
                     <motion.span
-                      layoutId="movil-filter-pill"
+                      layoutId={pillId}
                       transition={springs.morphing}
                       className="absolute inset-0 rounded-[20px] bg-green-100"
                     />

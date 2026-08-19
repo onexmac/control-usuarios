@@ -553,14 +553,18 @@ export function PedidoSurface() {
             variants={itemVariants}
             className="px-6 py-6"
           >
-            <AnimatePresence mode="wait">
+            {/* popLayout, not mode="wait": waiting for a full exit before the
+                enter left the panel visibly empty for a beat. Overlapping the
+                two lets them cross-fade, and the exit is quicker than the enter
+                so the incoming tab always leads. */}
+            <AnimatePresence mode="popLayout" initial={false}>
               {tab === "bodega" ? (
                 <motion.section
                   key="bodega"
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={springs.expanding}
+                  exit={{ opacity: 0, y: -6, transition: { duration: 0.12, ease: "easeIn" } }}
+                  transition={{ ...springs.settling, opacity: { duration: 0.22, ease: "easeOut" } }}
                   className="flex flex-col gap-6"
                 >
                   {/* No OBRAS heading: it popped in the moment the first
@@ -707,10 +711,10 @@ export function PedidoSurface() {
               ) : (
                 <motion.section
                   key={tab}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={springs.expanding}
+                  exit={{ opacity: 0, y: -6, transition: { duration: 0.12, ease: "easeIn" } }}
+                  transition={{ ...springs.settling, opacity: { duration: 0.22, ease: "easeOut" } }}
                   className="px-2 pt-2 text-body text-gray-300"
                 >
                   {/* Reference screens only define the Bodega tab. */}

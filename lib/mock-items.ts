@@ -72,3 +72,24 @@ export const mockObras: Obra[] = [
     items: [varilla("acc-5", true)],
   },
 ];
+
+/** Estado of a pedido in the mobile list. */
+export type PedidoEstado = "borrador" | "enviado" | "recibido";
+
+export type Pedido = {
+  id: string;
+  folio: string;
+  obra: string;
+  proyecto: string;
+  lineas: number;
+  estado: PedidoEstado;
+  fecha: string;
+};
+
+export const mockPedidos: Pedido[] = [
+  { id: "p-1", folio: "PD-0148", obra: "A05", proyecto: "Valle Novarum", lineas: 4, estado: "borrador", fecha: "Hoy" },
+  { id: "p-2", folio: "PD-0147", obra: "A06", proyecto: "Valle Novarum", lineas: 2, estado: "enviado", fecha: "Hoy" },
+  { id: "p-3", folio: "PD-0145", obra: "A07", proyecto: "Alto Palermo", lineas: 7, estado: "enviado", fecha: "Ayer" },
+  { id: "p-4", folio: "PD-0142", obra: "A05", proyecto: "Valle Novarum", lineas: 3, estado: "recibido", fecha: "18 ago" },
+  { id: "p-5", folio: "PD-0139", obra: "A09", proyecto: "Bosque Real", lineas: 5, estado: "recibido", fecha: "17 ago" },
+];

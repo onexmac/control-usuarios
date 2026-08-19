@@ -39,7 +39,10 @@ export function SelectionDropdown({
         <span className={cn(value ? "text-black" : "text-gray-300")}>
           {value ?? placeholder}
         </span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-black text-white">
+        {/* White with a dark-grey stroke and a grey glyph. Solid black here
+            out-shouted the field's own value — the caret is an affordance, not
+            the point of the row. */}
+        <span className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-white text-gray-400 ring-1 ring-gray-300">
           <CaretUpDown size={18} weight="bold" />
         </span>
       </button>
